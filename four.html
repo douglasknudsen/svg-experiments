@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script>
+
+        var ns = 'http://www.w3.org/2000/svg';
+        var width = 50;
+        var delta = width/2;
+        var nodes = [];
+        var numNodes = 30;
+
+        function setMeUp()    {
+
+            for( var i=0; i<numNodes; i++) {
+
+                createNode( i );
+            }
+
+            drawLines();
+        }
+
+        function reset()    {
+            var svg  = document.getElementById('root');
+            while (svg.hasChildNodes()) {
+                svg.removeChild(svg.lastChild);
+            }
+            nodes = [];
+            setMeUp();
+        }
+
+
+
+        function createNode(i)  {
+            var box = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            box.xx = Math.round(Math.random() * 500) ;
+            box.yy = Math.round(Math.random() * 500) ;
+            box.setAttribute("x", box.xx );
+            box.setAttribute("y", box.yy );
+            box.setAttribute("width","50px");
+            box.setAttribute("height","50px");
+            box.setAttribute("fill","#0000ff");
+            document.getElementById("root").appendChild( box );
+            nodes.push( box );
+        }
+
+
+        function drawLines() {
+
+            for( var i=0; i<numNodes; i++) {
+
+                var node = nodes[i];
+                var nextNode;
+                if( i < numNodes-1 )
+                {
+                    nextNode = nodes[i+1];
+                }
+                else
+                {
+                    nextNode = nodes[0];
+                }
+
+                createLine( node, nextNode);
+
+            }
+
+        }
+
+        function createLine( node1, node2)   {
+
+            //var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute("x1", node1.xx + delta);
+            line.setAttribute("y1", node1.yy + delta);
+            line.setAttribute("x2", node2.xx + delta);
+            line.setAttribute("y2", node2.yy + delta);
+            line.setAttribute("stroke", "black");
+            line.setAttribute("stroke-width","2");
+
+            //svg.appendChild(line);
+            document.getElementById("root").appendChild( line );
+        }
+
+
+
+
+    </script>
+</head>
+<body onload="setMeUp()">
+<button onclick="reset()" name="">Reset Me</button>
+    <svg id="root" width="700px" height="700px" style="position:absolute;" >
+
+    </svg>
+</body>
+</html>

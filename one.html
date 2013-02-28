@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>title</title>
+
+    <script>
+        function setmeup() {
+            var root = document.getElementById("nodeContainer");
+            var nodeObj = document.createElement("object");
+            nodeObj.type = "image/svg+xml";
+            nodeObj.data = "node.svg";
+            var newNode;
+            var x;
+            for( var i=0; i<11; i++)
+            {
+                x = i < 5 ? 50*i : 50*(10-i);
+
+                newNode = nodeObj.cloneNode(false);
+                newNode.setAttribute("style","position: absolute;left:" + x + "px; top:" + (i*60) + "px;" );
+                root.appendChild( newNode );
+            }
+        }
+
+    </script>
+</head>
+<body onload="setmeup()">
+
+<div id="nodeContainer" style="position: absolute;height: 500px;" ></div>
+
+
+</body>
+</html>

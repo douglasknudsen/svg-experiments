@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script>
+        function setmeup()  {
+
+            var numNodes = 3;
+
+            var nodes = [
+                { x:10, y:10},
+                { x:50, y:50},
+                { x:120, y:30}
+            ]
+
+            var nodeObj;
+
+            for( var i=0; i < numNodes; i++)    {
+                var nodeObj = document.createElement("object");
+                nodeObj.type = "image/svg+xml";
+                nodeObj.data = "myNode.svg";
+                nodeObj.addEventListener("load", nodeLoaded );
+                nodeObj.setAttribute("id",i);
+                nodeObj.setAttribute("style","position: absolute;left:" + nodes[i].x + "px;top:" + nodes[i].y + "px;");
+                console.log( nodeObj.id );
+                document.getElementById("root").appendChild( nodeObj );
+
+            }
+
+
+            function nodeLoaded( object ) {
+                try{
+                    object.target.contentDocument.defaultView.setData( nodes[ object.target.id ]);
+                }
+                catch( exception) {
+                    console.log("couldn't get a handle on the SVG node");
+                }
+                   console.log( object.target.id );
+                //console.log( object.target.contentDocument.defaultView.document.getAttribute("id") );
+
+            }
+
+        }
+    </script>
+
+</head>
+<body onload="setmeup()">
+   <div id="root" style="position: absolute;height: 500px;" ></div>
+
+</body>
+</html>

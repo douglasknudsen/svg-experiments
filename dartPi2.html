@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script>
+
+        (function() {
+            var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+            window.requestAnimationFrame = requestAnimationFrame;
+        })();
+
+        var dartBoardRadius = 1;
+        var svgns   = "http://www.w3.org/2000/svg";
+        var xlinkns = "http://www.w3.org/1999/xlink"
+        var inside = 0,outside = 0;
+        var counter = 0;
+        var sampleSize = 0;
+
+        function approxPi(  )
+        {
+            var x,y;
+
+            if( counter === sampleSize )
+            {
+                document.getElementById("result").innerText = "pi \u2248 " + (4 * ( inside / sampleSize ));
+                return;
+            }
+
+            x = Math.random();
+            y = Math.random();
+
+            if( x*x + y*y <= 1)
+            {
+                inside++;
+            }
+            else
+            {
+                outside++;
+            }
+            //console.log( x*x + y*y );
+            createDot( 400*x, 400*y ) ;
+
+            counter++;
+            document.getElementById("counter").innerText = counter;
+
+            requestAnimationFrame( approxPi );
+
+        }
+
+        function runIt()    {
+            dumpAll();
+            counter = 0;
+            inside = 0;
+            outside = 0;
+            sampleSize =  parseInt( document.getElementById("theCount").value );
+            approxPi(  );
+        }
+
+        function createDot( x,y ) {
+            var svg  = document.getElementsByTagName('svg')[0];
+            var el = svg.ownerDocument.createElementNS( svgns, "use");
+            el.setAttributeNS(xlinkns, 'xlink:href','#dot');
+            var anim1 = svg.getElementById("theTrans");
+            var anim = anim1.cloneNode(false);
+            anim.setAttributeNS( null, "from", "0,400");
+            anim.setAttributeNS( null, "to", x + "," + y);
+
+            el.appendChild( anim );
+            svg.appendChild( el );
+
+            anim.beginElement();
+        }
+
+        function dumpAll()
+        {
+            var svg  = document.getElementsByTagName('svg')[0];
+            var l = svg.childNodes.length;
+            for( var i=l-1; i>-1; i--)  {
+                if( svg.childNodes[i].nodeName === "use")
+                {
+                    svg.removeChild( svg.childNodes[i] );
+                }
+            }
+
+        }
+    </script>
+</head>
+<body>
+
+<div>
+    count:
+    <input id="theCount" name="count">
+    <button onclick="runIt()">Start</button>
+    <span id="counter"></span>
+</div>
+
+<div id="result" >result</div>
+
+<div id="dia" width="400" height="400">
+    <svg width="400" height="400"
+         xmlns='http://www.w3.org/2000/svg'  >
+
+         <defs>
+
+            <animateTransform id="theTrans" begin="0" attributeName="transform" type="translate" dur="0.5" fill="freeze" />
+
+            <g id="dot" width="1" height="1" x="0" y="0" style="transform: translateZ(0);" >
+                <circle  r="3" cx=".25" cy=".25" x="0" y="0"  />
+            </g>
+        </defs>
+
+        <circle r="400px" cx="0px" cy="400px" style="fill:#ff0000;fill-opacity: 1;stroke:black;stroke-width: 1;"/>
+    </svg>
+
+</div>
+
+<div>
+    <img src="spinner.svg">
+
+</div>
+</body>
+</html>

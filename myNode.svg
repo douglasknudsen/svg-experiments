@@ -1,0 +1,43 @@
+<svg
+   xmlns='http://www.w3.org/2000/svg'
+   xmlns:xlink='http://www.w3.org/1999/xlink'
+    width="50px" height="50px"
+   style="position: absolute;">
+
+   <script type="text/javascript">
+
+        var data;
+
+        function setData( data )    {
+            this.data = data;
+
+            document.getElementById('nombre').textContent = "(" + data.x + "," + data.y + ")";
+
+            console.log( "woot   " + document  );
+
+        }
+
+        function testMe()   {
+            console.log( this.id );
+        }
+
+   </script>
+
+
+   <rect id="P" x="0" y="0"
+                width="100%"
+                height="100%"
+                fill="#00ff00"
+                >
+
+
+   </rect>
+
+   <text id="nombre" x="5" y="20"
+           font-family="Verdana"
+           font-size="10"
+           font-color="#000">
+       5
+     </text>
+
+</svg>

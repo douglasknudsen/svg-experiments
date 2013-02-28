@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script>
+
+        var svgns   = "http://www.w3.org/2000/svg";
+        var xlinkns = "http://www.w3.org/1999/xlink"
+
+        function setMeUp()   {
+
+            var svg  = document.getElementsByTagName('svg')[0];
+            var l = svg.childNodes.length;
+            for( var i=l-1; i>-1; i--)  {
+                if( svg.childNodes[i].nodeName === "use")
+                {
+                    svg.removeChild( svg.childNodes[i] );
+                }
+            }
+
+            for( var i=0; i < 100; i++ )   {
+
+                createThem(
+                        Math.round( Math.random()*500),
+                        Math.round( Math.random()*500),
+                        Math.round( Math.random()*2),
+                        Math.round( Math.random()*2),
+                        i );
+
+            }
+        }
+
+        function createThem( x,y,sx,sy,i ) {
+            var svg  = document.getElementsByTagName('svg')[0];
+            var el = svg.ownerDocument.createElementNS( svgns, "use");
+            el.setAttributeNS(xlinkns, 'xlink:href','#myRect');
+            el.setAttributeNS(null, "transform", "translate( " + x + ", " + y + ") scale( " + sx + "," + sy + ")");
+            svg.appendChild( el );
+
+        }
+
+
+    </script>
+</head>
+<body onload="setMeUp()" >
+<button onclick="setMeUp()" >Click Me</button>
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     baseProfile="full"  height="600" width="600"
+        style="position: absolute;">
+    <defs>
+        <g id="myRect" width="50" height="50">
+
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#d66;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#123;stop-opacity:1" />
+            </linearGradient>
+            <rect  x="0" y="0"
+                  width="50"
+                  height="50"
+                  fill="url(#grad1)"
+                    ></rect>
+        </g>
+
+    </defs>
+
+    <!--<use xlink:href="#myRect" x="200" y="0" width="50" height="50"></use>-->
+</svg>
+
+
+
+</body>
+</html>

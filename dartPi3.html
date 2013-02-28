@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script>
+
+        (function() {
+            var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+            window.requestAnimationFrame = requestAnimationFrame;
+        })();
+
+
+        var dartBoardRadius = 1;
+        var svgns   = "http://www.w3.org/2000/svg";
+        var xlinkns = "http://www.w3.org/1999/xlink"
+        var inside = 0,outside = 0;
+        var counter = 0;
+        var sampleSize = 0;
+        var template;
+
+        var samples = [];
+
+        var svg ;
+
+        function showThemAll(  )
+        {
+            if( counter === sampleSize )
+            {
+                return;
+            }
+
+            var el = template.cloneNode(false);
+            el.setAttributeNS(null, "transform", "translate( " + ( 400*samples[counter].x) + ", " + ( 400*samples[counter].y) + ")");
+            svg.appendChild( el );
+            counter++;
+            document.getElementById("counter").innerText = counter;
+
+            requestAnimationFrame( showThemAll );
+
+        }
+
+        function showThemAllNoReq() {
+            for( var i=0; i< sampleSize;i++)   {
+                var el = template.cloneNode(false);
+                el.setAttributeNS(null, "transform", "translate( " + ( 400*samples[i].x) + ", " + ( 400*samples[i].y) + ")");
+                svg.appendChild( el );
+                document.getElementById("counter").innerText = counter;
+            }
+
+        }
+
+        function buildSamples()    {
+
+            for( var i=0; i < sampleSize; i++)   {
+                x = Math.random();
+                y = Math.random();
+
+                if( x*x + y*y <= 1)
+                {
+                    inside++;
+                }
+                else
+                {
+                    outside++;
+                }
+                samples[i] =  {"x":x,"y":y};
+            }
+
+            console.log( samples.length );
+            console.log( (4 * ( inside / sampleSize )  ));
+        }
+
+        function runIt( val )    {
+            svg  = document.getElementsByTagName('svg')[0];
+            dumpAll();
+            template = createDotTemplate();
+            sampleSize =  parseInt( document.getElementById("theCount").value );
+            samples = [];
+            inside = 0;
+            outside = 0;
+            buildSamples();
+            console.log("coords are generated")     ;
+            document.getElementById("result").innerText = "pi \u2248 " + (4 * ( inside / sampleSize ));
+            counter = 0;
+            if( val )
+                showThemAll();
+            else
+                showThemAllNoReq();
+
+        }
+
+
+        function createDot( x,y ) {
+            var svg  = document.getElementsByTagName('svg')[0];
+            var el = svg.ownerDocument.createElementNS( svgns, "use");
+            el.setAttributeNS(xlinkns, 'xlink:href','#dot');
+            if( animate )   {
+                var anim1 = svg.getElementById("theTrans");
+                var anim = anim1.cloneNode(false);
+                anim.setAttributeNS( null, "from", "0,400");
+                anim.setAttributeNS( null, "to", x + "," + y);
+
+                el.appendChild( anim );
+                svg.appendChild( el );
+                anim.beginElement();
+            }
+            else
+            {
+                el.setAttributeNS(null, "transform", "translate( " + x + ", " + y + ")");
+                svg.appendChild( el );
+            }
+
+
+
+        }
+
+        function createDotTemplate( ) {
+            var el = svg.ownerDocument.createElementNS( svgns, "use");
+            el.setAttributeNS(xlinkns, 'xlink:href','#dot');
+            return el;
+
+        }
+
+        function dumpAll()
+        {
+            var svg  = document.getElementsByTagName('svg')[0];
+            var l = svg.childNodes.length;
+            for( var i=l-1; i>-1; i--)  {
+                if( svg.childNodes[i].nodeName === "use")
+                {
+                    svg.removeChild( svg.childNodes[i] );
+                }
+            }
+
+        }
+
+
+    </script>
+</head>
+<body>
+
+<div>
+    count:
+    <input id="theCount" name="count">
+    <button onclick="runIt( true )">Start</button>
+    <button onclick="runIt( false )">Start without requestanimationframe</button>
+    <span id="counter"></span>
+</div>
+
+<div id="result" >result</div>
+
+<div id="dia" width="400" height="400">
+    <svg width="400" height="400"
+         xmlns='http://www.w3.org/2000/svg'  >
+
+         <defs>
+
+            <animateTransform id="theTrans" begin="0" attributeName="transform" type="translate" dur="0.5" fill="freeze" />
+
+            <g id="dot" width="1" height="1" x="0" y="0" style="transform: translateZ(0);" >
+                <circle  r="3" cx=".25" cy=".25" x="0" y="0"  />
+            </g>
+        </defs>
+
+        <circle r="400px" cx="0px" cy="400px" style="fill:#ff0000;fill-opacity: 1;stroke:black;stroke-width: 1;"/>
+    </svg>
+
+</div>
+<div>
+    <img src="spinner.svg">
+
+</div>
+</body>
+</html>
