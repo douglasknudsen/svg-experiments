@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <script>
+
+        (function() {
+            var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                    window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+            window.requestAnimationFrame = requestAnimationFrame;
+        })();
+
+        var svgns   = "http://www.w3.org/2000/svg";
+        var xlinkns = "http://www.w3.org/1999/xlink"
+        var inside = 0,outside = 0;
+        var counter = 0;
+        var sampleSize = 0;
+        var elString = "";
+        var samples = [];
+
+
+
+        function showThemAllDomString() {
+            var doc = ' <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"  ><defs>' +
+                    '<g id="dot" width="1" height="1" x="0" y="0"  >' +
+                    '<circle  r="3" cx=".25" cy=".25" x="0" y="0"  />' +
+                    '</g> </defs>';
+
+            for( var i = 0; i < sampleSize; i++ )   {
+                doc += createDot( 400*samples[i].x, 400*samples[i].y );
+            }
+
+            doc += '</svg>';
+            console.log("I'm inserting into the DOM");
+            document.getElementById("results").innerHTML = doc;
+        }
+
+        function buildSamples()    {
+
+            for( var i=0; i < sampleSize; i++)   {
+                x = Math.random();
+                y = Math.random();
+
+                if( x*x + y*y <= 1)
+                {
+                    inside++;
+                }
+                else
+                {
+                    outside++;
+                }
+                samples[i] =  {"x":x,"y":y};
+            }
+
+            console.log( samples.length );
+            console.log( (4 * ( inside / sampleSize )  ));
+        }
+
+
+        function runIt( )    {
+            dumpAll();
+            sampleSize =  parseInt( document.getElementById("theCount").value );
+            samples = [];
+            inside = 0;
+            outside = 0;
+            buildSamples();
+            console.log("coords are generated")     ;
+            document.getElementById("result").innerText = "pi \u2248 " + (4 * ( inside / sampleSize ));
+            counter = 0;
+            showThemAllDomString();
+
+        }
+
+
+        function createDot( x,y ) {
+
+            elString = '<use xlink:href="#dot" transform="translate(' + x + ',' + y + ')"> </use>';
+            return elString;
+
+        }
+
+        function createDotTemplate( ) {
+            var el = svg.ownerDocument.createElementNS( svgns, "use");
+            el.setAttributeNS(xlinkns, 'xlink:href','#dot');
+            return el;
+
+        }
+
+        function dumpAll()
+        {
+            var root  = document.getElementsByTagName('results');
+            root.innerHTML = "";
+
+        }
+
+
+    </script>
+</head>
+<body>
+
+<div>
+    count:
+    <input id="theCount" name="count">
+    <button onclick="runIt()">GO!</button>
+    <span id="counter"></span>
+</div>
+
+<div id="result" >result</div>
+
+<div id="dia" width="400" height="400" style="position: absolute;">
+    <svg width="400" height="400"
+         xmlns='http://www.w3.org/2000/svg'  style="position: absolute;" >
+
+        <defs>
+
+            <g id="dot" width="1" height="1" x="0" y="0"  >
+                <circle  r="1" cx=".5" cy=".5" x="0" y="0"  />
+            </g>
+        </defs>
+
+        <circle r="400px" cx="0px" cy="400px" style="fill:#ff0000;fill-opacity: 1;stroke:black;stroke-width: 1;"/>
+    </svg>
+    <div id="results" style="position: absolute;" ></div>
+</div>
+
+<div>
+    <img src="spinner.svg">
+
+</div>
+</body>
+</html>
