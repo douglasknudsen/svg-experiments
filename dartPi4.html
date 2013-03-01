@@ -24,7 +24,7 @@
         function showThemAllDomString() {
             var doc = ' <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"  ><defs>' +
                     '<g id="dot" width="1" height="1" x="0" y="0"  >' +
-                    '<circle  r="3" cx=".25" cy=".25" x="0" y="0"  />' +
+                    '<circle  r="1" cx=".5" cy=".5" x="0" y="0"  />' +
                     '</g> </defs>';
 
             for( var i = 0; i < sampleSize; i++ )   {
@@ -108,20 +108,17 @@
 
 <div id="result" >result</div>
 
-<div id="dia" width="400" height="400" style="position: absolute;">
-    <svg width="400" height="400"
-         xmlns='http://www.w3.org/2000/svg'  style="position: absolute;" >
-
-        <defs>
-
-            <g id="dot" width="1" height="1" x="0" y="0"  >
-                <circle  r="1" cx=".5" cy=".5" x="0" y="0"  />
-            </g>
-        </defs>
-
-        <circle r="400px" cx="0px" cy="400px" style="fill:#ff0000;fill-opacity: 1;stroke:black;stroke-width: 1;"/>
-    </svg>
+<div id="dia" width="400" height="400">
     <div id="results" style="position: absolute;" ></div>
+    <div id="main"  >
+    <svg width="400" height="400"
+         xmlns='http://www.w3.org/2000/svg'  >
+
+        <circle r="400px" cx="0px" cy="400px" style="fill:#ff0000;fill-opacity: 1;stroke:black;stroke-width: 1;"></circle>
+
+    </svg>
+    </div>
+
 </div>
 
 <div>
