@@ -1,7 +1,7 @@
 svg-experiments
 ===============
 
-Experiments in SVG use in HTML/JS
+Experiments in SVG use in HTML and JS
 
 These are all based on a couple blog posts I wrote at
 
